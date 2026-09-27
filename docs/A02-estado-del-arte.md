@@ -6,7 +6,7 @@
 
 Este documento revisa el estado actual de los asistentes conversacionales aplicados a documentación técnica y a dominios afines. Es el producto de la actividad A02 de la propuesta. No selecciona tecnologías (eso corresponde a A03) ni cierra la comparación entre modelo local y servicio en la nube (A04). Sí fija el marco conceptual, los resultados que ya están establecidos y las brechas que justifican el estudio de factibilidad.
 
-El recorte de requerimientos vigente está en [A01](A01-requerimientos.md). Donde la literatura sugiere un requerimiento nuevo o un ajuste de prioridad, se deja explícito en la sección 10 para incorporarlo en la próxima revisión de A01.
+El recorte de requerimientos vigente está en [A01](A01-requerimientos.md) (versión 0.2) y coincide con la selección de `docs user`. Donde este documento cita un identificador que ya no figura en A01 —por ejemplo RF-10, RF-13, RF-16, RF-25 o RNF-03— esa mención describe el catálogo preliminar 0.1 o una implicancia de la literatura, no un requerimiento vigente. Los candidatos de la sección 10 no entraron en la selección; quedan propuestos para una revisión posterior.
 
 ---
 
@@ -228,7 +228,7 @@ Nada en la literatura revisada declara inviable el modo local para un corpus aco
 
 ### 10.1 Candidatos a incorporar en A01
 
-No se modifican todavía los identificadores vigentes. Estos ítems se proponen para la próxima revisión de requerimientos.
+A01 v0.2 ya dejó vigente solo la selección de `docs user`. Estos ítems no forman parte de ese listado. Se proponen para una revisión posterior de requerimientos.
 
 | Candidato | Prioridad sugerida | Fundamento | Se apoya en |
 | --- | --- | --- | --- |
