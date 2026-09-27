@@ -171,7 +171,7 @@ A01 no congela tecnologías (eso es A03). En las próximas iteraciones conviene:
 4. Resolver el solapamiento entre RF-23 (Media) y RF-28 (Baja): la selección los trae los dos, con una diferencia de redacción (“placa” frente a “placa/etiqueta”).
 5. Mantener trazabilidad: cada RF/RNF de este listado debería poder mapearse luego a un componente de A06 y a una prueba de A08.
 
-**Dependencias:** [A02, sección 10](A02-estado-del-arte.md) propone candidatos (búsqueda híbrida, reescritura de la consulta, fragmentación estructural, preguntas incontestables en un conjunto dorado, presupuesto de contexto). Esos candidatos **no** forman parte de este listado hasta que se los incorpore en una revisión posterior. A04 sigue siendo el análisis local frente a nube de la propuesta; si el hardware local resulta inviable, esa inviabilidad es un hallazgo del proyecto. El requerimiento vigente asociado es RNF-18, no la obligación de implementar ambos modos.
+**Dependencias:** [A02, sección 10](A02-estado-del-arte.md) propone candidatos (búsqueda híbrida, reescritura de la consulta, fragmentación estructural, preguntas incontestables en el protocolo de prueba, presupuesto de contexto). Esos candidatos **no** forman parte de este listado hasta que se los incorpore en una revisión posterior. A04 sigue siendo el análisis local frente a nube de la propuesta; si el hardware local resulta inviable, esa inviabilidad es un hallazgo del proyecto. El requerimiento vigente asociado es RNF-18, no la obligación de implementar ambos modos.
 
 ---
 
