@@ -1,26 +1,30 @@
 # A01 — Determinación de requerimientos del sistema
 
 **Proyecto:** Factibilidad de un Asistente Conversacional Inteligente para la Interpretación de Documentación Técnica  
-**Estado:** Preliminar (punto de partida de A01)  
-**Versión:** 0.1
+**Estado:** Recorte vigente, tomado de la selección en [docs user](../docs%20user/Requerimientos_del_sistema_1e25.pdf)  
+**Versión:** 0.2
 
-Este documento propone un primer conjunto de requerimientos funcionales y no funcionales para el prototipo y para el estudio de factibilidad. Son un insumo de trabajo: se refinarán con A02 (estado del arte), A03–A04 (tecnologías y local vs. nube) y A05 (caso de uso y documentación concreta).
+El listado de este documento contiene **únicamente** los requerimientos funcionales, no funcionales y criterios de evaluación seleccionados en `docs user/Requerimientos_del_sistema_1e25.pdf`. El catálogo preliminar (versión 0.1) queda reemplazado: lo que no figura aquí no es un requerimiento del sistema.
+
+Los identificadores que se conservan (RF-01, RF-02, etc.) son los del catálogo preliminar, para no romper la trazabilidad con [A02](A02-estado-del-arte.md). Los números que no aparecen quedaron fuera de la selección. RF-28 y RNF-23 no existían en 0.1: son ítems de la selección que no tenían identificador previo.
+
+Prioridad, como en la selección: **Alta**, **Media**, **Baja**.
 
 ---
 
 ## 1. Propósito y alcance
 
-El sistema objeto de estudio es un **asistente conversacional** que permite consultar documentación técnica en lenguaje natural y obtiene respuestas **ancladas** en esa documentación (enfoque RAG), en lugar de depender solo del conocimiento general del modelo de lenguaje.
+El sistema objeto de estudio es un **asistente conversacional** que permite consultar documentación técnica en lenguaje natural y obtiene respuestas **ancladas** en esa documentación, en lugar de depender solo del conocimiento general del modelo de lenguaje.
 
-El trabajo es un **estudio de factibilidad** con prototipo, no un producto de producción. Los requerimientos distinguen:
+El trabajo es un **estudio de factibilidad** con prototipo, no un producto de producción. El alcance de requerimientos es el de la selección:
 
-| Alcance | Qué cubre |
+| Prioridad | Qué implica en el prototipo |
 | --- | --- |
-| Prototipo (Must / Should) | Lo mínimo para demostrar y validar el enfoque |
-| Sistema objetivo (Could) | Capacidades deseables si la factibilidad se confirma |
-| Fuera de alcance del prototipo | Lo que no se pretende construir en este proyecto |
+| Alta | Imprescindible para demostrar el enfoque |
+| Media | Importante si el tiempo de A07 lo permite |
+| Baja | Deseable, no condiciona la factibilidad |
 
-**Caso de uso aún no fijado (A05).** Los requerimientos se formulan de manera independiente del dominio (manuales de equipos, documentación de lenguajes/APIs, guías de configuración, etc.). Al elegir el caso de uso, algunos ítems se especializarán (formatos, volumen, idioma, criticidad de un error).
+**Caso de uso aún no fijado (A05).** Los requerimientos se formulan de manera independiente del dominio (manuales de equipos, documentación de lenguajes/APIs, guías de configuración, etc.). Al elegir el caso de uso, algunos ítems se especializarán (volumen, idioma, criticidad de un error). El formato de entrada exigido por la selección es **PDF**.
 
 ---
 
@@ -29,22 +33,22 @@ El trabajo es un **estudio de factibilidad** con prototipo, no un producto de pr
 | Actor | Interés |
 | --- | --- |
 | Usuario consultante | Resolver una duda puntual sin leer el documento completo |
-| Autor / dueño de la documentación | Que las respuestas respeten el contenido y la versión vigentes |
-| Operador del prototipo (alumno / director) | Cargar documentos, elegir backend (local o nube) y registrar evidencia de validación |
-| Evaluadores académicos | Poder juzgar factibilidad: precisión, utilidad, límites, costo, privacidad y hardware |
+| Autor / dueño de la documentación | Que las respuestas respeten el contenido vigente |
+| Operador del prototipo (alumno / director) | Cargar la documentación y registrar la validación |
+| Evaluadores académicos | Poder juzgar factibilidad: precisión, utilidad y limitaciones |
 
 ---
 
 ## 3. Premisas y restricciones (RC)
 
-Estas restricciones condicionan el resto de los requerimientos y alimentan A03–A04.
+Estas restricciones vienen de la propuesta de proyecto. No amplían el listado de requerimientos.
 
 | ID | Restricción |
 | --- | --- |
 | RC-01 | Recursos computacionales limitados (equipo personal / entorno académico; no se asume un cluster). |
-| RC-02 | El prototipo debe poder compararse en al menos dos modos de inferencia: **modelo local** y **servicio externo en la nube**. |
-| RC-03 | La documentación de entrada es **heterogénea** (manuales, especificaciones, referencias, historiales de versión) y no está necesariamente estructurada para búsqueda. |
-| RC-04 | Un error en la respuesta puede tener **consecuencias relevantes** en el dominio real; el prototipo debe explicitar incertidumbre y citar fuentes, no “inventar” con aparente certeza. |
+| RC-02 | La propuesta pide comparar, en A04, un modelo local y un servicio en la nube. El requerimiento seleccionado es más acotado: la arquitectura debe permitir **intercambiar LLMs de manera modular** (RNF-18). Implementar ambos modos no es, por sí, un requerimiento del prototipo. |
+| RC-03 | La documentación de entrada es heterogénea y no está necesariamente estructurada para búsqueda. El requerimiento de ingesta seleccionado exige al menos **PDF**. |
+| RC-04 | Un error en la respuesta puede tener consecuencias relevantes en el dominio real. Por eso la selección exige citas, abstención ante evidencia insuficiente o contradictoria, trazabilidad y minimizar alucinaciones. |
 | RC-05 | Plazo y esfuerzo de un Proyecto Final: priorizar un recorte vertical demostrable (un caso de uso, un corpus acotado) frente a cobertura amplia. |
 | RC-06 | El idioma de la interfaz y de las respuestas será, en el prototipo, **español y/o inglés**, según el corpus elegido en A05. |
 
@@ -52,140 +56,62 @@ Estas restricciones condicionan el resto de los requerimientos y alimentan A03�
 
 ## 4. Casos de uso de alto nivel
 
+Solo los que se desprenden de los requerimientos seleccionados.
+
 ```text
 CU-01  Consultar la documentación en lenguaje natural
-CU-02  Hacer una pregunta de seguimiento (contexto de conversación)
-CU-03  Recibir la respuesta con citas al documento (sección / página / fragmento)
-CU-04  Indicar que la documentación no alcanza para responder
-CU-05  Ingerir / indexar un conjunto de documentos técnicos
-CU-06  Elegir backend de inferencia (local vs. nube)
-CU-07  (opcional) Consultar por voz
-CU-08  (opcional) Adjuntar una imagen (captura de error, diagrama, fragmento de manual)
-CU-09  Registrar la interacción para evaluación (A08)
+CU-02  Recibir la respuesta anclada en la documentación, con citas
+CU-03  Que el sistema declare evidencia insuficiente o contradictoria
+CU-04  Incorporar documentación técnica en PDF
+CU-05  Hacer una pregunta de seguimiento (contexto de conversación)
+CU-06  Recibir un pedido de aclaración ante una consulta ambigua
+CU-07  Adjuntar una imagen para contextualizar la pregunta
 ```
 
 ---
 
 ## 5. Requerimientos funcionales (RF)
 
-Prioridad: **Must** (imprescindible en el prototipo), **Should** (importante si el tiempo lo permite), **Could** (sistema objetivo / multimodal), **Won't** (explícitamente fuera del prototipo).
+### 5.1 Consulta e interfaz
 
-### 5.1 Consulta conversacional
+| ID | Requerimiento | Prioridad |
+| --- | --- | --- |
+| RF-01 | El usuario podrá realizar consultas en lenguaje natural sobre la documentación cargada, sin necesariamente tener conocimiento detallado de la misma. | Alta |
+| RF-21 | Interfaz de consulta y respuesta por texto (chat). | Alta |
+| RF-02 | El sistema generará una respuesta basándose en la documentación, y no solo en sus propios conocimientos y lógica. | Alta |
+| RF-03 | Cada respuesta incluirá citas al origen de la información: documento, ubicación (sección, página, etc.) y/o un extracto. | Alta |
+| RF-04 | El sistema debe declarar cuando la evidencia recuperada es insuficiente o contradictoria. | Alta |
+| RF-05 | El sistema mantendrá contexto de conversación para preguntas de seguimiento. | Media |
+| RF-06 | Ante consultas ambiguas, el sistema podrá requerir una aclaración (producto, versión, sección, síntoma) antes de responder. | Media |
 
-| ID | Requerimiento | Prioridad | Trazabilidad |
-| --- | --- | --- | --- |
-| RF-01 | El usuario podrá formular preguntas en lenguaje natural sobre la documentación cargada, sin conocer la estructura del documento. | Must | Objetivo general; CU-01 |
-| RF-02 | El sistema generará la respuesta **apoyándose en fragmentos recuperados** de esa documentación (RAG), no solo en el conocimiento paramétrico del LLM. | Must | Introducción (RAG); RC-04 |
-| RF-03 | Cada respuesta incluirá **citas** al origen: documento, ubicación (sección, página o identificador de fragmento) y, si es viable, un extracto. | Must | Precisión / confiabilidad |
-| RF-04 | Si la evidencia recuperada es insuficiente o contradictoria, el sistema **lo declarará** (no rellenará con información no sustentada). | Must | RC-04 |
-| RF-05 | El sistema mantendrá **contexto de conversación** para preguntas de seguimiento (“¿y el parámetro anterior?”, “mostrame el ejemplo”). | Should | CU-02 |
-| RF-06 | Ante consultas ambiguas, el sistema podrá pedir **aclaración** (producto, versión, sección, síntoma) antes de responder. | Should | Utilidad percibida |
-| RF-07 | El usuario podrá restringir la consulta a un subconjunto del corpus (un manual, una versión, un módulo). | Could | Documentación heterogénea |
-| RF-08 | El sistema distinguirá, cuando sea posible, entre **procedimiento**, **referencia** y **advertencia/limitación** presentes en la fuente. | Could | Interpretación de docs técnicas |
+### 5.2 Documentación de entrada
 
-### 5.2 Ingesta e indexación
+| ID | Requerimiento | Prioridad |
+| --- | --- | --- |
+| RF-09 | Permitirá incorporar documentación técnica del caso de uso en al menos PDF. | Alta |
 
-| ID | Requerimiento | Prioridad | Trazabilidad |
-| --- | --- | --- | --- |
-| RF-09 | El prototipo permitirá incorporar documentación técnica del caso de uso en al menos **PDF** y un formato de texto estructurado (**Markdown** o **HTML**). | Must | A05; RC-03 |
-| RF-10 | El pipeline de ingesta extraerá texto (y, si aplica, títulos / headings) y lo **fragmentará e indexará** para recuperación semántica (y, si se evalúa, léxica). | Must | RAG; A03 |
-| RF-11 | Cada fragmento indexado conservará **metadatos** mínimos: documento de origen, versión (si existe), ubicación y fecha de ingesta. | Must | RF-03 |
-| RF-12 | El prototipo soportará un corpus **acotado pero real** (orden de magnitud a fijar en A05: p. ej. un manual + anexos, o un conjunto de páginas de API). | Must | RC-05 |
-| RF-13 | La reindexación de un documento actualizado reemplazará la versión anterior en el índice (o permitirá consultar por versión). | Should | Historiales de versión |
-| RF-14 | Ingesta de código de ejemplo, tablas y listas sin perder del todo su estructura. | Could | Docs de APIs / lenguajes |
-| RF-15 | OCR o parsing avanzado de PDFs escaneados / diagramas complejos. | Won't | Complejidad vs. plazo |
+### 5.3 Imagen adjunta
 
-### 5.3 Despliegue e inferencia
+La selección incluye las dos formulaciones siguientes, con prioridades distintas.
 
-| ID | Requerimiento | Prioridad | Trazabilidad |
-| --- | --- | --- | --- |
-| RF-16 | El prototipo podrá responder usando un **LLM local** (sin enviar el texto de la documentación a un proveedor externo). | Must | Objetivo específico local vs. nube |
-| RF-17 | El prototipo podrá responder usando un **servicio de LLM en la nube**, con la misma interfaz de consulta, para comparación. | Must | A03–A04 |
-| RF-18 | El modo de inferencia (local / nube) será **configurable** sin reescribir la lógica de recuperación. | Must | Arquitectura intercambiable (A06) |
-| RF-19 | En modo local, el sistema funcionará **sin conexión a internet** una vez descargados modelo e índice (salvo la propia UI si se hospeda en red). | Should | Disponibilidad offline |
-| RF-20 | El sistema expondrá (en logs o panel simple) **indicadores de corrida**: latencia de recuperación, latencia de generación, modelo usado, cantidad de fragmentos. | Should | A04 y A08 |
-
-### 5.4 Multimodalidad
-
-La propuesta menciona interfaces de texto, voz e imagen. Para un prototipo de factibilidad se sugiere **texto como Must** y el resto como Could, salvo que A05 justifique lo contrario (p. ej. un técnico de campo que necesita manos libres).
-
-| ID | Requerimiento | Prioridad | Trazabilidad |
-| --- | --- | --- | --- |
-| RF-21 | Interfaz de consulta y respuesta en **texto** (chat). | Must | Introducción |
-| RF-22 | Entrada y/o salida por **voz**. | Could | Interfaz multimodal |
-| RF-23 | El usuario podrá adjuntar una **imagen** (captura de error, foto de una placa/etiqueta, recorte de un manual) para contextualizar la pregunta. | Could | Interfaz multimodal |
-| RF-24 | El sistema podrá señalar en la respuesta **figuras o tablas** del documento cuando el fragmento recuperado las referencie. | Could | Docs técnicas ilustradas |
-
-### 5.5 Evaluación (soporte a A08)
-
-| ID | Requerimiento | Prioridad | Trazabilidad |
-| --- | --- | --- | --- |
-| RF-25 | El prototipo registrará, para cada consulta: pregunta, fragmentos recuperados, respuesta, citas, modo (local/nube) y tiempos. | Must | Metodología: validación |
-| RF-26 | El evaluador (usuario real o simulado) podrá marcar la respuesta como útil / no útil y, opcionalmente, comentar el error (alucinación, omisión, cita incorrecta). | Should | Utilidad percibida |
-| RF-27 | Existirá un conjunto de **preguntas de prueba** derivado del corpus (golden set) para medir acierto de forma repetible. | Must | Precisión de respuestas |
+| ID | Requerimiento | Prioridad |
+| --- | --- | --- |
+| RF-23 | El usuario podrá adjuntar una imagen (captura de error, foto de una placa, recorte de un manual) para contextualizar la pregunta. | Media |
+| RF-28 | El usuario podrá adjuntar una imagen (captura de error, foto de una placa/etiqueta, recorte de un manual) para contextualizar la pregunta. | Baja |
 
 ---
 
 ## 6. Requerimientos no funcionales (RNF)
 
-### 6.1 Precisión y confiabilidad
-
-| ID | Requerimiento | Prioridad | Notas de medición (A08) |
-| --- | --- | --- | --- |
-| RNF-01 | Las afirmaciones factuales de la respuesta deberán ser **trazables** a al menos un fragmento citado. | Must | Tasa de afirmaciones sin soporte |
-| RNF-02 | Se buscará minimizar **alucinaciones** (contenido plausible pero ausente o contradictorio con la fuente). | Must | Tasa de alucinación sobre golden set |
-| RNF-03 | Las citas deberán corresponder al fragmento realmente usado (no citar “de adorno”). | Must | Precisión de citas |
-| RNF-04 | Ante conflicto entre documentos o versiones, el sistema no elegirá una en silencio: lo **explicitará**. | Should | Casos de prueba de conflicto |
-
-Umbrales numéricos (p. ej. “≥ 80 % de respuestas aceptables”) se fijarán **después** de A05 y de un piloto sobre el corpus real; imponerlos ahora sería arbitrario.
-
-### 6.2 Privacidad y tratamiento de datos
-
 | ID | Requerimiento | Prioridad |
 | --- | --- | --- |
-| RNF-05 | En modo local, el texto de la documentación y de las consultas **no se enviará** a APIs externas. | Must |
-| RNF-06 | En modo nube, se documentará qué se transmite (prompt, fragmentos, metadatos) y se usará un corpus **no confidencial** o con autorización explícita. | Must |
-| RNF-07 | El prototipo no usará las consultas para reentrenar un modelo propio ni habilitará *training* en el proveedor, si este lo permite desactivar. | Should |
+| RNF-01 | Las afirmaciones realizadas por el sistema deben ser trazables a la documentación. | Alta |
+| RNF-02 | Se buscará minimizar alucinaciones. | Alta |
+| RNF-23 | El sistema debe poder reconocer cuando no es capaz de responder una consulta. | Alta |
+| RNF-08 | El tiempo de respuesta debe mantenerse en un rango aceptable (segundos, no minutos). | Alta |
+| RNF-18 | La arquitectura permitirá intercambiar LLMs de manera modular. | Alta |
 
-### 6.3 Desempeño y recursos
-
-| ID | Requerimiento | Prioridad |
-| --- | --- | --- |
-| RNF-08 | En modo nube, el tiempo hasta la primera respuesta útil debería mantenerse en un rango **interactivo** (objetivo de diseño: segundos, no minutos), sujeto al proveedor. | Should |
-| RNF-09 | En modo local, se aceptará mayor latencia; se **medirá y documentará** en el hardware de referencia (CPU / GPU, RAM, tamaño del modelo). | Must |
-| RNF-10 | El índice y el modelo local deberán caber, para el corpus del prototipo, en el hardware disponible; si no caben, eso es un **resultado de factibilidad**, no un fallo silencioso. | Must |
-| RNF-11 | Se registrará costo estimado por consulta en modo nube (tokens / precio) para el análisis de A04. | Should |
-
-### 6.4 Disponibilidad y operación
-
-| ID | Requerimiento | Prioridad |
-| --- | --- | --- |
-| RNF-12 | Modo local operable **offline** tras la instalación inicial (RF-19). | Should |
-| RNF-13 | Fallos del proveedor nube no deberán corromper el índice; el usuario podrá conmutar a modo local si está configurado. | Could |
-| RNF-14 | La ingesta de un documento fallido (PDF dañado, archivo vacío) se reportará con error claro, sin dejar el índice inconsistente a ciegas. | Should |
-
-### 6.5 Usabilidad
-
-| ID | Requerimiento | Prioridad |
-| --- | --- | --- |
-| RNF-15 | La interfaz de chat será usable por alguien que **no conoce RAG ni embeddings**; no exigirá armar queries booleanas. | Must |
-| RNF-16 | La respuesta mostrará citas de forma visible (enlaces o referencias clicables / copiables). | Must |
-| RNF-17 | El modo activo (local vs. nube) estará **siempre visible**, para no confundir privacidad y calidad. | Should |
-
-### 6.6 Mantenibilidad y comparabilidad (clave en un estudio de factibilidad)
-
-| ID | Requerimiento | Prioridad |
-| --- | --- | --- |
-| RNF-18 | La arquitectura permitirá **intercambiar** LLM, embedder y store vectorial con cambios localizados (no un monolito). | Must |
-| RNF-19 | Las decisiones de diseño y los resultados de A03–A04 quedarán documentados (modelo, contexto, chunking, top-k, etc.). | Must |
-| RNF-20 | El prototipo se versionará en este repositorio con instrucciones de corrida reproducibles. | Should |
-
-### 6.7 Seguridad (recorte realista)
-
-| ID | Requerimiento | Prioridad |
-| --- | --- | --- |
-| RNF-21 | Autenticación de usuarios, multi-tenant y cifrado en reposo: **Won't** para el prototipo, salvo que el caso de uso de A05 lo exija. | Won't |
-| RNF-22 | No se expondrá de forma pública un endpoint con documentos sensibles ni claves de API en el repositorio. | Must |
+Umbrales numéricos de precisión se fijarán después de A05 y de un piloto sobre el corpus real.
 
 ---
 
@@ -193,65 +119,66 @@ Umbrales numéricos (p. ej. “≥ 80 % de respuestas aceptables”) se fijarán
 
 Para no diluir el estudio de factibilidad:
 
-- Asistente generalista no anclado a un corpus (ChatGPT “suelto”).
+- Asistente generalista no anclado a un corpus.
 - Generación o modificación de la documentación (el sistema **interpreta**, no redacta el manual).
 - Control directo de equipos industriales o ejecución automática de procedimientos (solo asistencia a la lectura).
 - Entrenamiento / fine-tuning pesado de un LLM propio, salvo un experimento acotado que A03 justifique.
 - App móvil nativa, integración con tickets/ERP, o portal corporativo completo.
 - Garantía de corrección absoluta: se evalúa factibilidad y límites, no certificación de seguridad funcional.
 
----
-
-## 8. Criterios que A08 deberá poder evaluar
-
-Estos no son “features”, pero A01 debe dejarlos planteados porque la metodología de la propuesta los exige.
-
-| Dimensión | Pregunta de factibilidad | Evidencia esperada |
-| --- | --- | --- |
-| Precisión | ¿Las respuestas son correctas respecto del documento? | Golden set + juicio humano |
-| Utilidad percibida | ¿Ahorra tiempo frente a buscar en el PDF? | Encuesta / protocolo breve con usuarios reales o simulados |
-| Limitaciones | ¿Dónde falla (tablas, código, versiones, PDFs mal extraídos, contexto largo)? | Catálogo de fallos |
-| Local vs. nube | ¿Calidad, latencia, costo, privacidad, hardware? | Misma batería de preguntas en ambos modos (A04 + A08) |
-| Heterogeneidad | ¿El mismo pipeline sirve para más de un tipo de documento? | Al menos el corpus de A05; si hay tiempo, un segundo documento distinto |
+Quedó fuera de este listado todo ítem del catálogo preliminar que la selección no incluyó (entre otros: voz, filtros por subconjunto del corpus, OCR, modo local y modo nube como requisitos del prototipo, registro de corridas y conjunto dorado).
 
 ---
 
-## 9. Priorización sugerida para el recorte del prototipo (MVP)
+## 8. Criterios a evaluar
 
-**Incluir sí o sí**
+Son los tres criterios de la selección. A08 deberá poder observarlos.
 
-1. Chat de texto + RAG con citas (RF-01 a RF-04, RF-09 a RF-12, RF-21).
-2. Dos backends de inferencia comparables (RF-16 a RF-18).
-3. Registro de corridas y golden set (RF-25, RF-27, RNF-01 a RNF-03, RNF-09, RNF-18).
-
-**Incluir si A05 o el tiempo lo justifican**
-
-- Contexto conversacional, aclaraciones, reindexación por versión (RF-05, RF-06, RF-13).
-- Modo offline estricto y panel de métricas (RF-19, RF-20).
-
-**Dejar para el sistema objetivo / trabajo futuro**
-
-- Voz e imagen (RF-22, RF-23), salvo que el caso de uso lo vuelva central.
-- Auth empresarial, OCR de escaneos, integración con otras herramientas.
+| Criterio | Pregunta |
+| --- | --- |
+| Precisión | Qué tan correctas son las respuestas. |
+| Utilidad | Si el sistema es conveniente comparado con acceder a la documentación directamente. |
+| Limitaciones | Formatos aceptables de documentación, latencia, tamaño de contexto, etc. |
 
 ---
 
-## 10. Cómo seguir A01 (y qué no cerrar todavía)
+## 9. Priorización del recorte
 
-A01 no requiere congelar tecnologías (eso es A03). En las próximas iteraciones de esta sección conviene:
+**Alta**
+
+- Consulta en lenguaje natural, chat de texto, respuesta anclada en la documentación, citas y declaración de evidencia insuficiente o contradictoria (RF-01, RF-21, RF-02, RF-03, RF-04).
+- Ingesta de documentación en PDF (RF-09).
+- Trazabilidad, minimizar alucinaciones, reconocer que no se puede responder, latencia en segundos y arquitectura con LLMs intercambiables (RNF-01, RNF-02, RNF-23, RNF-08, RNF-18).
+
+**Media**
+
+- Contexto de conversación y pedido de aclaración (RF-05, RF-06).
+- Imagen adjunta en la formulación de RF-23.
+
+**Baja**
+
+- Imagen adjunta en la formulación de RF-28.
+
+---
+
+## 10. Cómo seguir A01
+
+A01 no congela tecnologías (eso es A03). En las próximas iteraciones conviene:
 
 1. Elegir o acotar el **perfil de usuario** (técnico de mantenimiento, desarrollador que consume una API, etc.), aunque el corpus formal sea A05.
-2. Convertir los RF/RNF en **historias o casos de uso detallados** (precondiciones, flujo, postcondiciones).
+2. Convertir los RF/RNF de este listado en **historias o casos de uso detallados** (precondiciones, flujo, postcondiciones).
 3. Definir **atributos de calidad medibles** una vez conocido el hardware y el tamaño del corpus.
-4. Revisar prioridades de multimodalidad: texto basta para factibilidad RAG; voz/imagen solo si el escenario de uso lo exige.
-5. Mantener trazabilidad: cada RF/RNF debería poder mapearse luego a un componente de A06 y a una prueba de A08.
+4. Resolver el solapamiento entre RF-23 (Media) y RF-28 (Baja): la selección los trae los dos, con una diferencia de redacción (“placa” frente a “placa/etiqueta”).
+5. Mantener trazabilidad: cada RF/RNF de este listado debería poder mapearse luego a un componente de A06 y a una prueba de A08.
 
-**Dependencias:** A02 puede agregar requerimientos (p. ej. “human-in-the-loop”, evaluación RAGAS, *hybrid search*). Esos candidatos, con su fundamento bibliográfico, están en [A02, sección 10](A02-estado-del-arte.md). A04 puede recortar RF-16/RF-19 si el hardware local resulta inviable: esa inviabilidad **es un hallazgo válido** del proyecto, no un incumplimiento.
+**Dependencias:** [A02, sección 10](A02-estado-del-arte.md) propone candidatos (búsqueda híbrida, reescritura de la consulta, fragmentación estructural, preguntas incontestables en un conjunto dorado, presupuesto de contexto). Esos candidatos **no** forman parte de este listado hasta que se los incorpore en una revisión posterior. A04 sigue siendo el análisis local frente a nube de la propuesta; si el hardware local resulta inviable, esa inviabilidad es un hallazgo del proyecto. El requerimiento vigente asociado es RNF-18, no la obligación de implementar ambos modos.
 
 ---
 
-## 11. Resumen ejecutivo de posibles requerimientos
+## 11. Resumen ejecutivo
 
-Si hay que comunicar A01 en una página:
+El sistema debe permitir **preguntar en lenguaje natural** sobre la documentación cargada, **responder a partir de esa documentación** (no solo del conocimiento del modelo), **citar el origen** y **declarar** cuando la evidencia es insuficiente o contradictoria. Debe aceptar documentación en **PDF** y ofrecer la consulta por **chat de texto**. En prioridad media quedan el **contexto de conversación**, el **pedido de aclaración** y **adjuntar una imagen**; una segunda formulación de la imagen adjunta queda en prioridad baja.
 
-El sistema debe permitir **preguntar en lenguaje natural** sobre un corpus técnico cargado, **recuperar fragmentos**, **responder con citas** y **admitir que no sabe** cuando la fuente no alcanza. Debe poder correr con **LLM local y LLM en la nube** sobre la misma tubería RAG, para comparar calidad, costo, privacidad, latencia y hardware. La interfaz mínima es **chat de texto**; voz e imagen son deseables. Lo no funcional crítico es **anclaje a la fuente** (poca alucinación), **privacidad en modo local**, **arquitectura intercambiable** y **medición reproducible**. El prototipo no es un producto corporativo: es el vehículo para argumentar factibilidad y límites.
+En lo no funcional, las afirmaciones deben ser **trazables**, se busca **minimizar alucinaciones**, el sistema debe **reconocer cuándo no puede responder**, el tiempo de respuesta debe mantenerse en **segundos** y la arquitectura debe permitir **intercambiar LLMs** de forma modular.
+
+La validación (A08) observa tres criterios: **precisión**, **utilidad** frente a leer la documentación directo, y **limitaciones** (formatos, latencia, tamaño de contexto).
