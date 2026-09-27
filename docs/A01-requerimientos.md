@@ -246,7 +246,7 @@ A01 no requiere congelar tecnologías (eso es A03). En las próximas iteraciones
 4. Revisar prioridades de multimodalidad: texto basta para factibilidad RAG; voz/imagen solo si el escenario de uso lo exige.
 5. Mantener trazabilidad: cada RF/RNF debería poder mapearse luego a un componente de A06 y a una prueba de A08.
 
-**Dependencias:** A02 puede agregar requerimientos (p. ej. “human-in-the-loop”, evaluación RAGAS, *hybrid search*). A04 puede recortar RF-16/RF-19 si el hardware local resulta inviable: esa inviabilidad **es un hallazgo válido** del proyecto, no un incumplimiento.
+**Dependencias:** A02 puede agregar requerimientos (p. ej. “human-in-the-loop”, evaluación RAGAS, *hybrid search*). Esos candidatos, con su fundamento bibliográfico, están en [A02, sección 10](A02-estado-del-arte.md). A04 puede recortar RF-16/RF-19 si el hardware local resulta inviable: esa inviabilidad **es un hallazgo válido** del proyecto, no un incumplimiento.
 
 ---
 
